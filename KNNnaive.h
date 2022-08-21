@@ -15,10 +15,12 @@ namespace knn {
 	{
 		private:
 			struct __data_t {
-				vecop::features* __X;
-				vecop::class_label* __Y;
+				vecop::features __X;
+				vecop::class_label __Y;
 				distance dis;
 			};
+
+			std::vector<int> __index;
 
 			__data_t* __data;
 			DistMethod __method;
@@ -30,5 +32,9 @@ namespace knn {
 
 			void fit(const vecop::features& X, const vecop::class_label& Y);
 			int predict(const vecop::feature& X);
+		private:
+			inline void __euclidian_dist(const vecop::feature& obj);
+			inline void __manhattan_dist(const vecop::feature& obj);
+			inline int __max_repeat(const vecop::class_label& y);
 	};
 }

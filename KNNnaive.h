@@ -1,17 +1,34 @@
 #pragma once
 #include "vecoperation.h"
+#include "distanses.h"
 
-class KNNnaive
-{
-	private:
-		vecop::features *__X;
-		vecop::class_label *__Y;
-		int __k;
+namespace knn {
+	typedef std::vector<double> distance;
 
-	public:
-		KNNnaive(int k = 3);
-		
-		void fit(const vecop::features &X,const vecop::class_label &Y);
-		int predict(const vecop::feature &X);
-};
+	enum class DistMethod 
+	{
+		EUCLIDEAN_DIST,
+		MANHATTAN_DIST
+	};
 
+	class KNNnaive
+	{
+		private:
+			struct __data_t {
+				vecop::features* __X;
+				vecop::class_label* __Y;
+				distance dis;
+			};
+
+			__data_t* __data;
+			DistMethod __method;
+			int __k;
+
+		public:
+			KNNnaive(int k = 3, DistMethod method = DistMethod::EUCLIDEAN_DIST);
+			~KNNnaive();
+
+			void fit(const vecop::features& X, const vecop::class_label& Y);
+			int predict(const vecop::feature& X);
+	};
+}
